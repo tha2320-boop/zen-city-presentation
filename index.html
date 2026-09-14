@@ -466,7 +466,7 @@
         }
       });
 
-      // Chart 5: March Line Chart (Corrected to include U.T. Student + Student Membership)
+      // Chart 5: March Line Chart (Exact values provided)
       const ctx5 = document.getElementById('slide5Chart').getContext('2d');
       new Chart(ctx5, {
         type: 'line',
@@ -474,7 +474,7 @@
           labels: Array.from({length: 31}, (_, i) => i + 1),
           datasets: [{
             label: 'Student Trips',
-            data: [287, 272, 237, 182, 117, 97, 167, 193, 218, 220, 141, 46, 31, 37, 34, 23, 1, 6, 36, 72, 137, 256, 234, 252, 214, 130, 110, 263, 285, 268, 287],
+            data: [287,273,237,184,117,95,166,190,217,220,143,45,31,36,34,23,0,5,34,71,137,256,234,251,214,128,109,262,284,265,285],
             borderColor: '#06b6d4', // Zen City Teal
             backgroundColor: '#06b6d4',
             tension: 0.3,
@@ -495,7 +495,7 @@
         }
       });
       
-      // Chart 6: Hourly Demand Plateau (Corrected to 24-hour full dataset peaking at 1,509)
+      // Chart 6: Hourly Demand Plateau (Exact query values provided)
       const ctx6 = document.getElementById('slide6Chart').getContext('2d');
       new Chart(ctx6, {
         type: 'bar',
@@ -503,7 +503,7 @@
           labels: ['12am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm'],
           datasets: [{
             label: 'Trips',
-            data: [85, 42, 21, 15, 18, 45, 150, 410, 750, 1020, 1250, 1410, 1485, 1490, 1505, 1509, 1495, 1420, 1250, 980, 650, 420, 250, 130],
+            data: [165,124,67,77,39,21,70,340,394,737,863,938,1280,1299,1109,1509,1418,1496,1329,1035,832,593,431,314],
             backgroundColor: '#06b6d4', // Zen City Teal
             borderRadius: 4
           }]
