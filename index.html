@@ -136,26 +136,44 @@
 
       <!-- SLIDE 2: THE REFRAME -->
       <section>
-        <div class="mb-8 text-center">
+        <div class="mb-6 text-center">
           <span class="text-sm font-bold uppercase tracking-widest text-cyan-600 bg-cyan-50 border border-cyan-100 px-4 py-1.5 rounded-full">The Reframe</span>
           <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-6">A Campus Commute Engine, Not a Citywide Network</h2>
-          <p class="text-slate-600 text-lg mt-4 max-w-4xl mx-auto">
+          <p class="text-slate-600 text-base mt-3 max-w-4xl mx-auto">
             Before optimizing anything, the Q1 data forced a different starting picture of the business. Zen City's ridership isn't spread evenly across the city - it's concentrated almost entirely around the UT Austin campus corridor.
           </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mt-12 max-w-5xl mx-auto">
-          <div class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center relative overflow-hidden">
-             <div class="absolute top-0 right-0 w-2 h-full bg-cyan-500"></div>
-             <p class="text-7xl font-black text-cyan-500">77.3%</p>
-             <p class="text-lg font-medium text-slate-600 mt-4">of Q1 trips come from Student Membership riders<br/><span class="text-sm text-slate-400">~9.8x the next-largest segment</span></p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mt-6 max-w-6xl mx-auto">
+          
+          <!-- Card 1: Rider Groups -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm text-center relative flex flex-col h-[400px]">
+             <div class="mb-4">
+               <p class="text-6xl font-black text-cyan-500">77.3%</p>
+               <p class="text-[15px] font-medium text-slate-600 mt-1">of Q1 trips come from Student Membership riders<br/><span class="text-sm text-slate-400">~9.8x the next-largest segment</span></p>
+             </div>
+             
+             <!-- Rider Groups SVG Container -->
+             <div class="flex-1 w-full relative mt-2">
+                <svg id="riderGroupChart" viewBox="0 0 680 300" class="w-full h-full"></svg>
+                <div id="rgTooltip" class="absolute pointer-events-none bg-slate-800 text-white text-xs py-1.5 px-3 rounded shadow-lg opacity-0 transition-opacity z-50 whitespace-nowrap text-left" style="font-family: ui-monospace, monospace;"></div>
+             </div>
           </div>
           
-          <div class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center relative overflow-hidden">
-             <div class="absolute top-0 right-0 w-2 h-full bg-indigo-500"></div>
-             <p class="text-7xl font-black text-indigo-500">10 / 80</p>
-             <p class="text-lg font-medium text-slate-600 mt-4">origin vs. destination stations<br/><span class="text-sm text-slate-400">all 16,585 Q1 trips start from just 10 stations</span></p>
+          <!-- Card 2: Fan-out -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm text-center relative flex flex-col h-[400px]">
+             <div class="mb-4">
+               <p class="text-6xl font-black text-indigo-500">~8x</p>
+               <p class="text-[15px] font-medium text-slate-600 mt-1">trips start from just 10 stations but spread across ~8x as many destinations<br/><span class="text-sm text-slate-400">all 16,578 Q1 trips</span></p>
+             </div>
+             
+             <!-- Fan-out SVG Container -->
+             <div class="flex-1 w-full relative mt-2">
+                <svg id="fanoutChart" viewBox="0 0 780 420" class="w-full h-full"></svg>
+                <div id="foTooltip" class="absolute pointer-events-none bg-slate-800 text-white text-xs py-1.5 px-3 rounded shadow-lg opacity-0 transition-opacity z-50 whitespace-nowrap" style="font-family: ui-monospace, monospace;"></div>
+             </div>
           </div>
+
         </div>
       </section>
 
@@ -410,8 +428,10 @@
     }).then(() => {
       // Sync Top Bar on load
       updateTopBar();
-      // Render Charts
+      // Render Charts & Custom SVGs
       initCharts();
+      drawRiderGroups();
+      drawFanout();
     });
 
     // Listen to slide changes to update the custom Top Bar
@@ -419,7 +439,155 @@
       updateTopBar(event);
     });
 
-    // --- 3. Initialize Chart.js with Light Theme Colors ---
+    // --- 3. Custom SVG Render Functions for Slide 2 ---
+    function drawRiderGroups() {
+      const data = [
+        {label: "Student Membership", sub: "Student Membership", pct: "77.3", trips: 12818, color: "#06b6d4"},
+        {label: "Other Members", sub: "Local31 - Local365 - Annual - HT Ram", pct: "14.4", trips: 2390, color: "#6366f1"},
+        {label: "Casual / Short-term", sub: "Pay-as-you-ride - Explorer - Weekender - 24hr Pass", pct: "8.3", trips: 1370, color: "#f43f5e"}
+      ];
+      
+      const svg = document.getElementById('riderGroupChart');
+      const tooltip = document.getElementById('rgTooltip');
+      if(!svg) return;
+
+      const W = 680, H = 300;
+      const marginL = 10, marginR = 90, marginT = 10, marginB = 10;
+      const plotW = W - marginL - marginR;
+      const plotH = H - marginT - marginB;
+      const n = data.length;
+      const blockH = plotH / n; // ~93.3
+
+      let s = '';
+      data.forEach((d, i) => {
+        const by = marginT + i * blockH;
+
+        // Labels above the bar
+        s += `<text x="${marginL}" y="${by + 20}" font-weight="bold" fill="#1e293b" style="font-size: 18px; font-family: ui-sans-serif, system-ui, sans-serif;">${d.label}</text>`;
+        s += `<text x="${marginL}" y="${by + 40}" fill="#64748b" style="font-size: 13px; font-family: ui-sans-serif, system-ui, sans-serif;">${d.sub}</text>`;
+
+        // Bars
+        const barY = by + 50;
+        const barHeight = 28;
+        const bw = Math.max((parseFloat(d.pct) / 100) * plotW, 6);
+
+        // Background track
+        s += `<rect x="${marginL}" y="${barY}" width="${plotW}" height="${barHeight}" fill="#e2e8f0" rx="6"></rect>`;
+        // Colored bar
+        s += `<rect class="rg-bar cursor-pointer transition-all hover:brightness-110" data-i="${i}" x="${marginL}" y="${barY}" width="${bw}" height="${barHeight}" fill="${d.color}" rx="6"></rect>`;
+        // Percentage text
+        s += `<text x="${marginL + plotW + 15}" y="${barY + 21}" font-weight="900" text-anchor="start" fill="#1e293b" style="font-size: 24px; font-family: ui-sans-serif, system-ui, sans-serif;">${d.pct}%</text>`;
+      });
+
+      svg.innerHTML = s;
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+      // Tooltip interactions
+      svg.querySelectorAll('.rg-bar').forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+          const i = +el.getAttribute('data-i');
+          const d = data[i];
+          const rect = svg.getBoundingClientRect();
+          const scale = rect.width / W;
+          const px = (parseFloat(el.getAttribute('x')) + parseFloat(el.getAttribute('width'))/2) * scale;
+          const py = parseFloat(el.getAttribute('y')) * scale;
+          tooltip.style.left = px + 'px';
+          tooltip.style.top = (py - 5) + 'px';
+          tooltip.style.opacity = 1;
+          tooltip.style.transform = "translate(-50%, -100%)";
+          tooltip.innerHTML = `<span class="font-bold text-cyan-400">${d.label}</span><br/>${d.trips.toLocaleString()} trips (${d.pct}%)`;
+        });
+        el.addEventListener('mouseleave', () => { tooltip.style.opacity = 0; });
+      });
+    }
+
+    function drawFanout() {
+      const svg = document.getElementById('fanoutChart');
+      const tooltip = document.getElementById('foTooltip');
+      if(!svg) return;
+
+      const W = 780, H = 420;
+
+      // Origin nodes
+      const nOrigin = 10;
+      const originX = 120;
+      const originTop = 70, originBottom = 370; // Moved down slightly
+      const originPositions = [];
+      for (let i = 0; i < nOrigin; i++) {
+        const yy = originTop + (i / (nOrigin - 1)) * (originBottom - originTop);
+        originPositions.push({x: originX, y: yy});
+      }
+
+      // Destination nodes
+      const nDest = 79;
+      const destPositions = [];
+      const cx = 600, cy = 230, rx = 160, ry = 160; // Shrunk y-radius and moved cy down
+      const goldenAngle = 137.508 * Math.PI / 180;
+      for (let i = 0; i < nDest; i++) {
+        const t = i / (nDest - 1);
+        const r = Math.sqrt(t);
+        const angle = i * goldenAngle;
+        destPositions.push({
+          x: cx + r * rx * Math.cos(angle),
+          y: cy + r * ry * Math.sin(angle)
+        });
+      }
+
+      let s = '';
+
+      // Draw splines
+      originPositions.forEach((o, oi) => {
+        for (let k = 0; k < 9; k++) {
+          const di = (oi * 9 + k * 7 + oi) % nDest;
+          const d = destPositions[di];
+          const mx = (o.x + d.x) / 2 + (oi - 4.5) * 4;
+          s += `<path d="M ${o.x} ${o.y} Q ${mx} ${(o.y + d.y) / 2} ${d.x} ${d.y}" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-opacity="0.25"/>`;
+        }
+      });
+
+      // Draw destinations
+      destPositions.forEach((d, i) => {
+        s += `<circle class="fo-node cursor-pointer transition-all hover:r-[7px]" data-kind="dest" cx="${d.x}" cy="${d.y}" r="4.5" fill="#818cf8"/>`;
+      });
+
+      // Draw origins
+      originPositions.forEach((o, i) => {
+        s += `<circle class="fo-node cursor-pointer transition-all hover:r-[9px]" data-kind="origin" cx="${o.x}" cy="${o.y}" r="7" fill="#06b6d4" stroke="#ffffff" stroke-width="2"/>`;
+      });
+
+      // Header Text (Moved up relative to nodes)
+      s += `<text x="${originX}" y="15" text-anchor="middle" class="font-bold text-slate-800" style="font-size: 16px;">Origins</text>`;
+      s += `<text x="${originX}" y="32" text-anchor="middle" fill="#64748b" style="font-size: 13px;">10 stations</text>`;
+      s += `<text x="${cx}" y="15" text-anchor="middle" class="font-bold text-slate-800" style="font-size: 16px;">Destinations</text>`;
+      s += `<text x="${cx}" y="32" text-anchor="middle" fill="#64748b" style="font-size: 13px;">79 stations</text>`;
+
+      svg.innerHTML = s;
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+      // Tooltip interactions
+      svg.querySelectorAll('.fo-node').forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+          const kind = el.getAttribute('data-kind');
+          const rect = svg.getBoundingClientRect();
+          const scale = rect.width / W;
+          const px = parseFloat(el.getAttribute('cx')) * scale;
+          const py = parseFloat(el.getAttribute('cy')) * scale;
+          tooltip.style.left = px + 'px';
+          tooltip.style.top = (py - 10) + 'px';
+          tooltip.style.opacity = 1;
+          tooltip.style.transform = "translate(-50%, -100%)";
+          
+          if(kind === 'origin') {
+             tooltip.innerHTML = `<span class="font-bold text-cyan-400">Origin Station</span>`;
+          } else {
+             tooltip.innerHTML = `<span class="font-bold text-indigo-400">Destination Station</span>`;
+          }
+        });
+        el.addEventListener('mouseleave', () => { tooltip.style.opacity = 0; });
+      });
+    }
+
+    // --- 4. Initialize Chart.js with Light Theme Colors ---
     function initCharts() {
       // Setup global defaults for the light theme
       Chart.defaults.color = '#64748b'; // slate-500
