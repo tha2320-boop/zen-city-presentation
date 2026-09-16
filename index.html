@@ -14,6 +14,8 @@
 
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Chart.js DataLabels Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
   <style>
     /* Reveal.js Overrides & Font Setup */
@@ -417,6 +419,10 @@
       Chart.defaults.color = '#64748b'; // slate-500
       Chart.defaults.font.family = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
 
+      // Register the DataLabels plugin globally, but turn it off by default for all charts
+      Chart.register(ChartDataLabels);
+      Chart.defaults.plugins.datalabels.display = false;
+
       // Chart 3: Doughnut for Utilization
       const ctx3 = document.getElementById('slide3Chart').getContext('2d');
       new Chart(ctx3, {
@@ -445,10 +451,18 @@
       new Chart(ctx4, {
         type: 'bar',
         data: {
-          labels: ['22½ & Rio Grande', '21st & Univ', 'Rio Grande & 28th', '22nd & Pearl', '23rd & San Gabriel', 'Guadalupe & 21st', '4th/Sabine'].reverse(),
+          labels: [
+            '22½ & Rio Grande', 
+            '4th/Sabine', 
+            'Guadalupe & 21st', 
+            '23rd & San Gabriel', 
+            'Rio Grande & 28th', 
+            '22nd & Pearl', 
+            '21st & Univ'
+          ],
           datasets: [{
             label: 'Departures per Dock',
-            data: [242, 83, 143, 141, 162, 177, 177].reverse(),
+            data: [242, 177, 177, 162, 143, 141, 83],
             backgroundColor: '#06b6d4', // Zen City Teal
             borderRadius: 4,
             barThickness: 24
@@ -458,7 +472,23 @@
           indexAxis: 'y',
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
+          layout: {
+            padding: { right: 35 } // Adds space so the numbers don't get cut off on the right
+          },
+          plugins: { 
+            legend: { display: false },
+            // Enable DataLabels only for this chart
+            datalabels: {
+              display: true,
+              anchor: 'end',
+              align: 'right',
+              color: '#475569', // slate-600 color for the text
+              font: {
+                weight: 'bold',
+                size: 13
+              }
+            }
+          },
           scales: {
             x: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } },
             y: { grid: { display: false }, ticks: { color: '#334155', font: { size: 12, weight: '500' } } }
