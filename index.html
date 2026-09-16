@@ -299,51 +299,57 @@
         </div>
       </section>
 
-      <!-- SLIDE 7: FINAL FORECAST -->
+      <!-- SLIDE 7: FINAL FORECAST (SIDE BY SIDE LAYOUT) -->
       <section>
         <div class="mb-10 text-center">
           <span class="text-sm font-bold uppercase tracking-widest text-cyan-600 bg-cyan-50 border border-cyan-100 px-4 py-1.5 rounded-full">Final Forecast</span>
           <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-6">How Many Rentals Will Station 2498 See on April 1st?</h2>
         </div>
 
-        <div class="mb-12 text-center">
-            <p class="text-8xl font-black text-cyan-500 drop-shadow-sm">53</p>
-            <p class="text-2xl font-bold text-slate-800 mt-2">predicted rentals</p>
-            <p class="text-lg text-slate-500 mt-1">Station 2498 · Friday, April 1, 2022</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl mx-auto text-left">
-          <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col">
-            <div class="flex items-center space-x-3 mb-3">
-              <span class="w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold shrink-0">1</span>
-              <h3 class="text-base font-bold text-slate-800">Isolate the station</h3>
-            </div>
-            <p class="text-sm text-slate-600">Filter cleaned Q1 rentals to trips starting at station 2498 only.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
+          
+          <!-- Left Side: Big Number Block -->
+          <div class="bg-slate-900 rounded-2xl p-10 text-center shadow-lg flex flex-col justify-center border border-slate-800">
+              <p class="text-8xl md:text-9xl font-black text-cyan-500 drop-shadow-sm mb-4">53</p>
+              <p class="text-2xl font-bold text-white">predicted rentals</p>
+              <p class="text-sm text-slate-400 mt-2">Station 2498 · Friday, April 1, 2022</p>
           </div>
 
-          <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col">
-            <div class="flex items-center space-x-3 mb-3">
-              <span class="w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold shrink-0">2</span>
-              <h3 class="text-base font-bold text-slate-800">Match the day type</h3>
+          <!-- Right Side: The 4 Steps Stacked -->
+          <div class="md:col-span-2 space-y-4 text-left">
+            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start space-x-4">
+              <span class="w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold shrink-0 mt-0.5">1</span>
+              <div>
+                  <h3 class="text-base font-bold text-slate-800">Isolate the station</h3>
+                  <p class="text-sm text-slate-600 mt-1">Filter cleaned Q1 rentals to trips starting at station 2498 only.</p>
+              </div>
             </div>
-            <p class="text-sm text-slate-600">April 1, 2022, is a Friday, so pull all Fridays in the cleaned Q1 data - 12 Fridays between Jan 1 and Mar 31.</p>
-          </div>
 
-          <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col">
-            <div class="flex items-center space-x-3 mb-3">
-              <span class="w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold shrink-0">3</span>
-              <h3 class="text-base font-bold text-slate-800">Control for the calendar</h3>
+            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start space-x-4">
+              <span class="w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold shrink-0 mt-0.5">2</span>
+              <div>
+                  <h3 class="text-base font-bold text-slate-800">Match the day type</h3>
+                  <p class="text-sm text-slate-600 mt-1">April 1, 2022, is a Friday, so pull all Fridays in the cleaned Q1 data - 12 Fridays between Jan 1 and Mar 31.</p>
+              </div>
             </div>
-            <p class="text-sm text-slate-600">UT Austin's spring break fell in mid-March, so the one Friday inside it (March 18) is excluded, leaving 11 usable Fridays.</p>
-          </div>
 
-          <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col">
-            <div class="flex items-center space-x-3 mb-3">
-              <span class="w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold shrink-0">4</span>
-              <h3 class="text-base font-bold text-slate-800">Weight the recent trend</h3>
+            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start space-x-4">
+              <span class="w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold shrink-0 mt-0.5">3</span>
+              <div>
+                  <h3 class="text-base font-bold text-slate-800">Control for the calendar</h3>
+                  <p class="text-sm text-slate-600 mt-1">UT Austin's spring break fell in mid-March, so the one Friday inside it (March 18) is excluded, leaving 11 usable Fridays.</p>
+              </div>
             </div>
-            <p class="text-sm text-slate-600">Rather than averaging all 11 Fridays equally, we isolate the <strong>3 most recent Fridays</strong> (Mar 4, 11, 25 &rarr; avg <strong>48.3</strong>) as the current level, then add one week of the quarter's verified growth (<strong>+5.01/week, R&sup2;=0.46</strong>) to project to April 1.</p>
+
+            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start space-x-4">
+              <span class="w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold shrink-0 mt-0.5">4</span>
+              <div>
+                  <h3 class="text-base font-bold text-slate-800">Weight the recent trend</h3>
+                  <p class="text-sm text-slate-600 mt-1">Rather than averaging all 11 Fridays equally, we isolate the <strong>3 most recent Fridays</strong> (Mar 4, 11, 25 &rarr; avg <strong>48.3</strong>) as the current level, then add one week of the quarter's verified growth (<strong>+5.01/week, R&sup2;=0.46</strong>) to project to April 1.</p>
+              </div>
+            </div>
           </div>
+          
         </div>
       </section>
 
