@@ -369,6 +369,38 @@
     box-shadow:var(--shadow);
   }
 
+  .zoom-controls{
+    position:absolute;
+    bottom:14px;
+    right:14px;
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+    border-radius:8px;
+    overflow:hidden;
+    border:1px solid var(--line-strong);
+    box-shadow:var(--shadow);
+    z-index:15;
+  }
+  .zoom-controls button{
+    width:32px;height:30px;
+    border:none;
+    background:var(--paper-raised);
+    color:var(--ink-soft);
+    font-family:'Libre Franklin',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    line-height:1;
+  }
+  .zoom-controls button:hover{background:var(--paper);color:var(--ink);}
+  .zoom-controls button:active{background:var(--line-soft,var(--line-strong));}
+  .zoom-controls button.reset-btn{font-size:11px;letter-spacing:0.02em;}
+  .zoom-controls button+button{border-top:1px solid var(--line-strong);}
+  main.mapwrap.grabbing{cursor:grabbing;}
+  main.mapwrap{cursor:grab;}
+
   .hover-tip{
     position:absolute;
     pointer-events:none;
@@ -514,6 +546,11 @@
       left:10px;right:10px;top:auto;bottom:10px;width:auto;
       max-height:60%;
     }
+    .zoom-controls{
+      bottom:auto;top:14px;right:14px;
+      flex-direction:row;
+    }
+    .zoom-controls button+button{border-top:none;border-left:1px solid var(--line-strong);}
     .search-wrap input{font-size:16px;}
   }
 </style>
@@ -559,6 +596,11 @@
     <main class="mapwrap" id="mapwrap">
       <svg class="austin-map" id="mapSvg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="compass">N<br>↑</div>
+      <div class="zoom-controls">
+        <button type="button" id="zoomInBtn" title="Zoom in" aria-label="Zoom in">+</button>
+        <button type="button" id="zoomOutBtn" title="Zoom out" aria-label="Zoom out">&minus;</button>
+        <button type="button" id="zoomResetBtn" class="reset-btn" title="Reset view" aria-label="Reset view">&#8634;</button>
+      </div>
       <div class="hover-tip" id="hoverTip"></div>
 
       <div class="detail-panel" id="detailPanel">
@@ -625,7 +667,7 @@ const xSpan = (maxLon-minLon)*cosLat;
 const ySpan = (maxLat-minLat);
 const scale = W/xSpan;
 const H = ySpan*scale;
-document.getElementById('mapSvg').setAttribute('viewBox', `0 0 ${W} ${H}`);
+const svgEl = document.getElementById('mapSvg');
 
 function proj([lat,lon]){
   const x = (lon-minLon)*cosLat*scale;
@@ -635,6 +677,73 @@ function proj([lat,lon]){
 function pathFor(points){
   return points.map(p=>proj(p)).map((p,i)=>(i===0?'M':'L')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
 }
+
+// ---------- zoom / pan ----------
+// The full system spans a wide area with a lot of empty margin around a dense
+// core (downtown / UT / Zilker / East Austin). Default to a tighter view of
+// that core — closer to how you'd frame it for a slide — while keeping the
+// full extent one click away.
+const FULL_VIEW = {x:0, y:0, w:W, h:H};
+const MIN_ZOOM_W = W*0.14;   // most zoomed in
+const MAX_ZOOM_W = W*1.15;   // most zoomed out (a little past full extent)
+
+function percentile(sortedArr, p){
+  const idx = (sortedArr.length-1)*p;
+  const lo = Math.floor(idx), hi = Math.min(lo+1, sortedArr.length-1);
+  const frac = idx-lo;
+  return sortedArr[lo] + frac*(sortedArr[hi]-sortedArr[lo]);
+}
+function computeDefaultView(){
+  const lats = STATIONS.map(s=>s.lat).sort((a,b)=>a-b);
+  const lons = STATIONS.map(s=>s.lon).sort((a,b)=>a-b);
+  const lat0 = percentile(lats,0.10), lat1 = percentile(lats,0.90);
+  const lon0 = percentile(lons,0.10), lon1 = percentile(lons,0.90);
+  const corners = [proj([lat0,lon0]), proj([lat0,lon1]), proj([lat1,lon0]), proj([lat1,lon1])];
+  const xs = corners.map(c=>c[0]), ys = corners.map(c=>c[1]);
+  const bx0=Math.min(...xs), bx1=Math.max(...xs), by0=Math.min(...ys), by1=Math.max(...ys);
+  const cx = (bx0+bx1)/2, cy=(by0+by1)/2;
+  const boxW = (bx1-bx0)*1.15, boxH = (by1-by0)*1.15;
+  const zoom = Math.max(1, Math.min(W/boxW, H/boxH));
+  let vw = W/zoom, vh = H/zoom;
+  vw = Math.min(Math.max(vw, MIN_ZOOM_W), MAX_ZOOM_W);
+  vh = vw*(H/W);
+  return clampView({x:cx-vw/2, y:cy-vh/2, w:vw, h:vh});
+}
+function clampView(v){
+  let {x,y,w,h} = v;
+  w = Math.min(Math.max(w, MIN_ZOOM_W), MAX_ZOOM_W);
+  h = w*(H/W);
+  const margin = w*0.5;
+  x = Math.min(Math.max(x, -margin), W-w+margin);
+  y = Math.min(Math.max(y, -margin), H-h+margin);
+  return {x,y,w,h};
+}
+let defaultView = computeDefaultView();
+let currentView = defaultView;
+function applyView(v){
+  currentView = v;
+  svgEl.setAttribute('viewBox', `${v.x.toFixed(1)} ${v.y.toFixed(1)} ${v.w.toFixed(1)} ${v.h.toFixed(1)}`);
+}
+function zoomBy(factor, anchor){
+  const a = anchor || {x: currentView.x+currentView.w/2, y: currentView.y+currentView.h/2};
+  const newW = currentView.w*factor;
+  const fx = (a.x-currentView.x)/currentView.w, fy = (a.y-currentView.y)/currentView.h;
+  const clamped = clampView({w:newW, h:newW*(H/W), x:0, y:0});
+  const nx = a.x - fx*clamped.w;
+  const ny = a.y - fy*clamped.h;
+  applyView(clampView({x:nx, y:ny, w:clamped.w, h:clamped.h}));
+}
+function panTo(cx, cy){
+  applyView(clampView({x:cx-currentView.w/2, y:cy-currentView.h/2, w:currentView.w, h:currentView.h}));
+}
+function ensureVisible(lat, lon){
+  const [x,y] = proj([lat,lon]);
+  const pad = currentView.w*0.12;
+  if(x < currentView.x+pad || x > currentView.x+currentView.w-pad || y < currentView.y+pad || y > currentView.y+currentView.h-pad){
+    panTo(x, y);
+  }
+}
+applyView(defaultView);
 
 // ---------- usage ramp (recomputed whenever the rider-type filter changes) ----------
 function quantile(arr,q){const pos=(arr.length-1)*q;const base=Math.floor(pos);const rest=pos-base;return arr[base+1]!==undefined?arr[base]+rest*(arr[base+1]-arr[base]):arr[base];}
@@ -808,6 +917,7 @@ function selectStation(id, fromList){
   selectedId = id;
   const s = STATIONS.find(x=>x.id===id);
   if(!s) return;
+  ensureVisible(s.lat, s.lon);
   Object.values(dotEls).forEach(d=>d.classList.remove('selected'));
   dotEls[id].classList.add('selected');
 
@@ -914,7 +1024,49 @@ updateMarkers();
 updateHeader();
 buildList('');
 const initialBest = STATIONS.filter(s=>filteredData[s.id].total>0).sort((a,b)=>filteredData[b.id].total-filteredData[a.id].total)[0];
-if(initialBest) selectStation(initialBest.id);
+if(initialBest) selectStation(initialBest.id, true);
+applyView(defaultView); // selecting the initial station may have panned; land on the framed default
+
+// ---------- zoom controls / wheel zoom / drag pan ----------
+function svgPointFromClient(clientX, clientY){
+  const r = svgEl.getBoundingClientRect();
+  const px = (clientX - r.left) / r.width, py = (clientY - r.top) / r.height;
+  return {x: currentView.x + px*currentView.w, y: currentView.y + py*currentView.h};
+}
+document.getElementById('zoomInBtn').addEventListener('click', ()=> zoomBy(0.7));
+document.getElementById('zoomOutBtn').addEventListener('click', ()=> zoomBy(1/0.7));
+document.getElementById('zoomResetBtn').addEventListener('click', ()=> applyView(defaultView));
+
+mapwrap.addEventListener('wheel', (e)=>{
+  e.preventDefault();
+  const anchor = svgPointFromClient(e.clientX, e.clientY);
+  zoomBy(e.deltaY > 0 ? 1.15 : 1/1.15, anchor);
+}, {passive:false});
+
+let dragging = false, dragStart = null, viewStart = null;
+mapwrap.addEventListener('mousedown', (e)=>{
+  if(e.button !== 0) return;
+  dragging = true;
+  dragStart = {x:e.clientX, y:e.clientY};
+  viewStart = {x:currentView.x, y:currentView.y};
+  mapwrap.classList.add('grabbing');
+});
+window.addEventListener('mousemove', (e)=>{
+  if(!dragging) return;
+  const r = svgEl.getBoundingClientRect();
+  const dx = (e.clientX - dragStart.x) * (currentView.w / r.width);
+  const dy = (e.clientY - dragStart.y) * (currentView.h / r.height);
+  applyView(clampView({x: viewStart.x - dx, y: viewStart.y - dy, w: currentView.w, h: currentView.h}));
+});
+window.addEventListener('mouseup', ()=>{
+  if(!dragging) return;
+  dragging = false;
+  mapwrap.classList.remove('grabbing');
+});
+mapwrap.addEventListener('dblclick', (e)=>{
+  const anchor = svgPointFromClient(e.clientX, e.clientY);
+  zoomBy(0.6, anchor);
+});
 
 // ---------- data notes modal ----------
 const notesOverlay = document.getElementById('notesOverlay');
