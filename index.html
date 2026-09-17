@@ -255,66 +255,120 @@
         </div>
       </section>
 
-      <!-- SLIDE 5: DIVERSIFY BEYOND STUDENTS -->
+      <!-- SLIDE 5: THE DATA (MAP INTEGRATION) -->
       <section>
-        <div class="mb-8">
-          <span class="text-sm font-bold uppercase tracking-widest text-cyan-600">Let’s Grow!!</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Diversify Beyond Students Before Q2's Seasonal Dip</h2>
+        <div class="mb-4">
+          <span class="text-sm font-bold uppercase tracking-widest text-cyan-600">The Data</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Diversify - Who's Riding Outside the Student Base</h2>
+          <p class="text-slate-600 mt-2 max-w-5xl">16,578 Q1 trips split into three distinct behavioral groups - not shrunk copies of each other. Geography, timing, and trip length all diverge.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto">
-          <div class="space-y-6 text-left">
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-              <h3 class="text-lg font-bold text-rose-500 mb-2">The Risk (77.3% Student Dependent)</h3>
-              <p class="text-slate-600 leading-relaxed">
-                Q2 (Apr-Jun) spans the end of spring semester. Q1 showed a ridership dip around mid-March spring break. A business that's 77.3% student-dependent will feel that seasonal swing directly in its Q2 numbers.
-              </p>
-            </div>
-            <div class="bg-white border-l-4 border-l-cyan-500 rounded-r-xl p-6 shadow-sm">
-              <h3 class="text-lg font-bold text-cyan-600 mb-2">Recommendation</h3>
-              <p class="text-slate-700 leading-relaxed font-medium">
-                Launch a targeted campaign for local residents and leisure riders ahead of Q2 so the summer-semester lull doesn’t translate one-to-one into a rental slump.
-              </p>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mt-6 max-w-7xl mx-auto h-[520px] items-stretch">
+          
+          <!-- Left: Stat Cards -->
+          <div class="md:col-span-5 flex flex-col space-y-4">
+             
+             <!-- Student Card -->
+             <div class="bg-white border-l-4 border-cyan-500 rounded-r-xl p-4 shadow-sm text-left flex-1 flex flex-col justify-center">
+                <div class="flex justify-between items-end mb-2">
+                  <h3 class="font-bold text-slate-800 text-lg uppercase tracking-wide">Student</h3>
+                  <span class="font-black text-cyan-500 text-xl">77.3%</span>
+                </div>
+                <ul class="text-[13px] text-slate-600 mb-2 space-y-1">
+                  <li><strong class="text-slate-800">Top station:</strong> 4th/Sabine (21.3%)</li>
+                  <li><strong class="text-slate-800">Weekend share:</strong> 17.7% <span class="mx-2 text-slate-300">|</span> <strong class="text-slate-800">Median:</strong> 5 min</li>
+                </ul>
+                <p class="text-sm text-slate-600 leading-snug">Clustered entirely on campus. Short, weekday, utility trips tied to the class schedule.</p>
+             </div>
+
+             <!-- Other Members Card -->
+             <div class="bg-white border-l-4 border-indigo-500 rounded-r-xl p-4 shadow-sm text-left flex-1 flex flex-col justify-center">
+                <div class="flex justify-between items-end mb-2">
+                  <h3 class="font-bold text-slate-800 text-lg uppercase tracking-wide">Other Members</h3>
+                  <span class="font-black text-indigo-500 text-xl">14.4%</span>
+                </div>
+                <ul class="text-[13px] text-slate-600 mb-2 space-y-1">
+                  <li><strong class="text-slate-800">Top station:</strong> Medina & East 6th (19.5%)</li>
+                  <li><strong class="text-slate-800">Weekend share:</strong> 26.9% <span class="mx-2 text-slate-300">|</span> <strong class="text-slate-800">Median:</strong> 15 min</li>
+                </ul>
+                <p class="text-sm text-slate-600 leading-snug">Flat across all 7 days (14–16% each). Steady, everyday local-resident use - not tied to campus.</p>
+             </div>
+
+             <!-- Casual Card -->
+             <div class="bg-white border-l-4 border-rose-500 rounded-r-xl p-4 shadow-sm text-left flex-1 flex flex-col justify-center">
+                <div class="flex justify-between items-end mb-2">
+                  <h3 class="font-bold text-slate-800 text-lg uppercase tracking-wide">Casual / Short-term</h3>
+                  <span class="font-black text-rose-500 text-xl">8.3%</span>
+                </div>
+                <ul class="text-[13px] text-slate-600 mb-2 space-y-1">
+                  <li><strong class="text-slate-800">Top station:</strong> Pfluger Bridge (29.8%)</li>
+                  <li><strong class="text-slate-800">Weekend share:</strong> 44.2% <span class="mx-2 text-slate-300">|</span> <strong class="text-slate-800">Median:</strong> 24 min</li>
+                </ul>
+                <p class="text-sm text-slate-600 leading-snug">Concentrated at the river-trail bridge, East 6th, and DKR Stadium. Weekend leisure behavior.</p>
+             </div>
+
           </div>
 
-          <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-            <h3 class="text-sm font-bold text-center text-slate-500 mb-4 uppercase tracking-wider">Student-Membership Trips per Day - March 2022</h3>
-            <div class="chart-container" style="height: 300px;">
-              <canvas id="slide5Chart"></canvas>
-            </div>
+          <!-- Right: Interactive Map iframe -->
+          <div class="md:col-span-7 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden relative">
+             <iframe src="map.html" title="Zen City Austin Interactive Map" class="w-full h-full border-none absolute inset-0"></iframe>
           </div>
+
         </div>
       </section>
 
-      <!-- SLIDE 6: CLASS SCHEDULE DEMAND -->
+      <!-- SLIDE 6: LET'S GROW! (EVENT STRATEGY) -->
       <section>
-        <div class="mb-8">
-          <span class="text-sm font-bold uppercase tracking-widest text-cyan-600">Let’s Grow!!!</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Demand Follows the Class Schedule</h2>
+        <div class="mb-6 text-center">
+          <span class="text-sm font-bold uppercase tracking-widest text-cyan-600 bg-cyan-50 border border-cyan-100 px-4 py-1.5 rounded-full">Let's Grow!</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-6">Convert Event Traffic Into Memberships</h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto mt-10">
-          <div class="bg-white border border-slate-200 rounded-xl p-8 shadow-sm text-left">
-              <h3 class="text-2xl font-bold text-slate-800 mb-4">No sharp rush hour</h3>
-              <p class="text-lg text-slate-600 leading-relaxed mb-8">
-                  Ridership climbs steadily from 7am and stays high from <strong>noon to 6pm</strong> - a single wide plateau, not a typical commuter bike-share shape.
-              </p>
-              <div class="p-6 bg-cyan-50 border border-cyan-200 rounded-xl">
-                  <h4 class="text-xl font-bold text-cyan-700 mb-2">Recommendation:</h4>
-                  <p class="text-lg text-slate-700">
-                    Shift bike-availability checks and promo pushes to the <strong>midday-afternoon (12-6pm)</strong> where the real volume lives.
-                  </p>
-              </div>
-          </div>
-          
-          <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-            <h3 class="text-sm font-bold text-center text-slate-500 mb-4 uppercase tracking-wider">Hourly Demand Plateau</h3>
-            <div class="chart-container" style="height: 320px;">
-              <canvas id="slide6Chart"></canvas>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto mb-6">
+            <!-- Stat 1 -->
+            <div class="bg-slate-900 rounded-2xl p-6 shadow-sm flex items-center space-x-6 border border-slate-800">
+                <div class="text-5xl font-black text-rose-500">13.4%</div>
+                <div class="text-slate-300 text-sm leading-relaxed text-left">of Casual-rider trips already start at 23rd & San Jacinto @ DKR Stadium - an event-driven spike, already in our data.</div>
             </div>
-          </div>
+            <!-- Stat 2 -->
+            <div class="bg-slate-900 rounded-2xl p-6 shadow-sm flex items-center space-x-6 border border-slate-800">
+                <div class="text-5xl font-black text-rose-500">44.2%</div>
+                <div class="text-slate-300 text-sm leading-relaxed text-left">of Casual-rider trips happen on weekends, clustered at Pfluger Bridge and East 6th - the exact festival/race crowd.</div>
+            </div>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto text-left">
+            <!-- Rec 1 -->
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm relative overflow-hidden flex flex-col h-[280px]">
+                <div class="absolute top-0 left-0 w-full h-1 bg-cyan-500"></div>
+                <div class="flex items-center space-x-3 mb-3 shrink-0">
+                  <span class="w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold">1</span>
+                  <h3 class="text-lg font-bold text-slate-800">Cap10K Bib Bundle</h3>
+                </div>
+                <p class="text-[15px] text-slate-600 mb-4 leading-relaxed flex-grow">Partner with Cap10K's race organizers to include a 3-day Zen City pass in every race-bib registration fee. Runners are active, adult, non-student - exactly the profile that's easy to convert once they've already tried the product “for free.”</p>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-100 shrink-0">
+                    <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Why it converts</span>
+                    <span class="text-sm text-slate-700">Converts exposure into a trial the rider already paid for - a much easier upgrade path to a Local31/365 membership than a cold sign-up.</span>
+                </div>
+            </div>
+            <!-- Rec 2 -->
+             <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm relative overflow-hidden flex flex-col h-[280px]">
+                <div class="absolute top-0 left-0 w-full h-1 bg-indigo-500"></div>
+                <div class="flex items-center space-x-3 mb-3 shrink-0">
+                  <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">2</span>
+                  <h3 class="text-lg font-bold text-slate-800">Blues on the Green Season Sponsorship</h3>
+                </div>
+                <p class="text-[15px] text-slate-600 mb-4 leading-relaxed flex-grow">Sponsor the full weekly summer series, not a single date - “Blues on the Green, powered by Zen City.” Add a punch-card promo: scan your bike's QR code at 3 different shows and get a free month of Local31.</p>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-100 shrink-0">
+                    <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Why it converts</span>
+                    <span class="text-sm text-slate-700">Weekly recurrence does the habit-forming work a one-off sponsorship can't - repeated exposure is what turns a casual rider into a subscriber.</span>
+                </div>
+            </div>
+        </div>
+
+        <p class="mt-8 text-center text-slate-500 font-medium text-[15px] max-w-3xl mx-auto">
+            Prioritized for near-term subscriber growth: both convert exposure into an actual membership signup, not just a single ride.
+        </p>
       </section>
 
       <!-- SLIDE 7: FINAL FORECAST (SIDE BY SIDE LAYOUT) -->
@@ -380,7 +434,7 @@
   <script>
     // --- 1. Top Navigation & Progress Bar Logic ---
     const totalSlides = 7;
-    const slideTitles = ["Title", "The Reframe", "Utilization", "Rebalance", "Diversify", "Schedule", "Forecast"];
+    const slideTitles = ["Title", "The Reframe", "Utilization", "Rebalance", "Who's Riding", "Event Strategy", "Forecast"];
 
     function buildNav(currentIndex) {
       const nav = document.getElementById('desktopNav');
@@ -456,7 +510,7 @@
       const plotW = W - marginL - marginR;
       const plotH = H - marginT - marginB;
       const n = data.length;
-      const blockH = plotH / n; // ~93.3
+      const blockH = plotH / n;
 
       let s = '';
       data.forEach((d, i) => {
@@ -511,7 +565,7 @@
       // Origin nodes
       const nOrigin = 10;
       const originX = 120;
-      const originTop = 70, originBottom = 370; // Moved down slightly
+      const originTop = 70, originBottom = 370;
       const originPositions = [];
       for (let i = 0; i < nOrigin; i++) {
         const yy = originTop + (i / (nOrigin - 1)) * (originBottom - originTop);
@@ -521,7 +575,7 @@
       // Destination nodes
       const nDest = 79;
       const destPositions = [];
-      const cx = 600, cy = 230, rx = 160, ry = 160; // Shrunk y-radius and moved cy down
+      const cx = 600, cy = 230, rx = 160, ry = 160;
       const goldenAngle = 137.508 * Math.PI / 180;
       for (let i = 0; i < nDest; i++) {
         const t = i / (nDest - 1);
@@ -555,7 +609,7 @@
         s += `<circle class="fo-node cursor-pointer transition-all hover:r-[9px]" data-kind="origin" cx="${o.x}" cy="${o.y}" r="7" fill="#06b6d4" stroke="#ffffff" stroke-width="2"/>`;
       });
 
-      // Header Text (Moved up relative to nodes)
+      // Header Text
       s += `<text x="${originX}" y="15" text-anchor="middle" class="font-bold text-slate-800" style="font-size: 16px;">Origins</text>`;
       s += `<text x="${originX}" y="32" text-anchor="middle" fill="#64748b" style="font-size: 13px;">10 stations</text>`;
       s += `<text x="${cx}" y="15" text-anchor="middle" class="font-bold text-slate-800" style="font-size: 16px;">Destinations</text>`;
@@ -589,15 +643,12 @@
 
     // --- 4. Initialize Chart.js with Light Theme Colors ---
     function initCharts() {
-      // Setup global defaults for the light theme
-      Chart.defaults.color = '#64748b'; // slate-500
+      Chart.defaults.color = '#64748b'; 
       Chart.defaults.font.family = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-
-      // Register the DataLabels plugin globally, but turn it off by default for all charts
       Chart.register(ChartDataLabels);
       Chart.defaults.plugins.datalabels.display = false;
 
-      // Chart 3: Doughnut for Utilization
+      // Chart 3: Doughnut
       const ctx3 = document.getElementById('slide3Chart').getContext('2d');
       new Chart(ctx3, {
         type: 'doughnut',
@@ -605,7 +656,7 @@
           labels: ['Overcrowded', 'Balanced', 'Underutilized'],
           datasets: [{
             data: [11.5, 7.7, 80.8],
-            backgroundColor: ['#f43f5e', '#10b981', '#0ea5e9'], // Rose, Emerald, Light Blue
+            backgroundColor: ['#f43f5e', '#10b981', '#0ea5e9'],
             borderWidth: 2,
             borderColor: '#ffffff',
             hoverOffset: 4
@@ -614,30 +665,22 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: { position: 'right', labels: { color: '#334155', font: { size: 13, weight: '500' } } }
-          }
+          plugins: { legend: { position: 'right', labels: { color: '#334155', font: { size: 13, weight: '500' } } } }
         }
       });
 
-      // Chart 4: Horizontal Bar for Departures
+      // Chart 4: Horizontal Bar
       const ctx4 = document.getElementById('slide4BarChart').getContext('2d');
       new Chart(ctx4, {
         type: 'bar',
         data: {
           labels: [
-            '22½ & Rio Grande', 
-            '4th/Sabine', 
-            'Guadalupe & 21st', 
-            '23rd & San Gabriel', 
-            'Rio Grande & 28th', 
-            '22nd & Pearl', 
-            '21st & Univ'
+            '22½ & Rio Grande', '4th/Sabine', 'Guadalupe & 21st', '23rd & San Gabriel', 'Rio Grande & 28th', '22nd & Pearl', '21st & Univ'
           ],
           datasets: [{
             label: 'Departures per Dock',
             data: [242, 177, 177, 162, 143, 141, 83],
-            backgroundColor: '#06b6d4', // Zen City Teal
+            backgroundColor: '#06b6d4',
             borderRadius: 4,
             barThickness: 24
           }]
@@ -646,79 +689,14 @@
           indexAxis: 'y',
           responsive: true,
           maintainAspectRatio: false,
-          layout: {
-            padding: { right: 35 } // Adds space so the numbers don't get cut off on the right
-          },
+          layout: { padding: { right: 35 } },
           plugins: { 
             legend: { display: false },
-            // Enable DataLabels only for this chart
-            datalabels: {
-              display: true,
-              anchor: 'end',
-              align: 'right',
-              color: '#475569', // slate-600 color for the text
-              font: {
-                weight: 'bold',
-                size: 13
-              }
-            }
+            datalabels: { display: true, anchor: 'end', align: 'right', color: '#475569', font: { weight: 'bold', size: 13 } }
           },
           scales: {
             x: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } },
             y: { grid: { display: false }, ticks: { color: '#334155', font: { size: 12, weight: '500' } } }
-          }
-        }
-      });
-
-      // Chart 5: March Line Chart (Exact values provided)
-      const ctx5 = document.getElementById('slide5Chart').getContext('2d');
-      new Chart(ctx5, {
-        type: 'line',
-        data: {
-          labels: Array.from({length: 31}, (_, i) => i + 1),
-          datasets: [{
-            label: 'Student Trips',
-            data: [287,273,237,184,117,95,166,190,217,220,143,45,31,36,34,23,0,5,34,71,137,256,234,251,214,128,109,262,284,265,285],
-            borderColor: '#06b6d4', // Zen City Teal
-            backgroundColor: '#06b6d4',
-            tension: 0.3,
-            borderWidth: 3,
-            pointRadius: 2,
-            pointBackgroundColor: '#ffffff',
-            pointBorderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } },
-            x: { grid: { display: false }, ticks: { color: '#64748b' } }
-          }
-        }
-      });
-      
-      // Chart 6: Hourly Demand Plateau (Exact query values provided)
-      const ctx6 = document.getElementById('slide6Chart').getContext('2d');
-      new Chart(ctx6, {
-        type: 'bar',
-        data: {
-          labels: ['12am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm'],
-          datasets: [{
-            label: 'Trips',
-            data: [165,124,67,77,39,21,70,340,394,737,863,938,1280,1299,1109,1509,1418,1496,1329,1035,832,593,431,314],
-            backgroundColor: '#06b6d4', // Zen City Teal
-            borderRadius: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } },
-            x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10, weight: '500' } }, maxTicksLimit: 24 }
           }
         }
       });
